@@ -1,8 +1,14 @@
 
 body.site {
-	background-color: #f4f6f7;
+	/*background-color: #f4f6f7;*/
 	padding: 20px;
 	border-top: 3px solid #333;
+	background-image: url(../img/fundo.svg);
+	background-attachment: fixed;
+}
+
+.container {
+	max-width: 860px !important;
 }
 
 .body .container {
