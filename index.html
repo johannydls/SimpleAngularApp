@@ -13,6 +13,7 @@
 	<script src="js/angular.min.js"></script>
 	<script src="js/myapp.js"></script>
 	<script src="js/jquery-3.2.1.js"></script>
+	<script src="bower_components/angular-scroll-glue/src/scrollglue.js"></script>
 
 	<link rel="shortcut icon" href="img/favicon.ico">
 
@@ -82,7 +83,7 @@
 								<td>{{product.name}}</td>
 								<td>R$ {{product.price}}</td>
 								<td>
-									<a class="btn btn-default" href="#" ng-click="addCarrinho(product.id)">
+									<a class="btn btn-default" href="javascript:void(0)" ng-click="addCarrinho(product.id)">
 										<i class="fa fa-cart-plus" aria-hidden="true"></i>
 									</a>
 							</td>
@@ -140,10 +141,10 @@
 							<td>x{{product.quantity}}</td>
 							<td>R$ {{product.price}}</td>
 							<td>
-								<a class="btn btn-default" href="#" ng-click="addOne(product.id)">
+								<a class="btn btn-default" href="javascript:void(0)" ng-click="addOne(product.id)">
 									<i class="fa fa-plus" aria-hidden="true"></i>
 								</a>
-								<a class="btn btn-default" href="#" ng-click="removeOne(product.id)">
+								<a class="btn btn-default" href="javascript:void(0)" ng-click="removeOne(product.id)">
 									<i class="fa fa-minus" aria-hidden="true"></i>
 								</a>
 							</td>
