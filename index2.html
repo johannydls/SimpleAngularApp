@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html ng-app="myapp" lang="pt-br">
+<html ng-app="myapp2" lang="pt-br">
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0" />
@@ -11,7 +11,7 @@
 	<link rel="stylesheet" href="css/font-awesome.min.css">
 
 	<script src="js/angular.min.js"></script>
-	<script src="js/myapp.js"></script>
+	<script src="js/myapp2.js"></script>
 	<script src="js/jquery-3.2.1.js"></script>
 
 </head>
@@ -83,8 +83,8 @@
 								<td>{{product.price}}</td>
 								<td>{{product.quantity}}</td>
 								<td>
-									<a href="#" ng-click="addCarrinho(product.id)">
-										<i class="fa fa-cart-plus fa-2x" aria-hidden="true"></i>
+									<a href="#" ng-click="del(product.id)">
+										<i class="fa fa-trash fa-2x" aria-hidden="true"></i>
 									</a>
 									| <a href="#" ng-click="selectEdit(product.id)" data-toggle="modal" data-target="#myModal">
 									<i class="fa fa-pencil-square-o fa-2x" aria-hidden="true"></i>
