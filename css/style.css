@@ -39,3 +39,17 @@ body.site {
 .banner a:hover {
 	text-decoration: none;
 }
+
+.footer span{
+	margin-top: 10px;
+}
+.centralizado a:hover {
+	text-decoration: none;
+}
+.fa-facebook-square,
+.fa-shopping-bag {
+	color: #303f9f;
+}
+.fa-google-plus-square {
+	color: red;
+}

@@ -3,65 +3,81 @@ var myapp = angular.module('myapp', []);
 myapp.controller('productController', function($scope) {
 
 	$scope.listProducts = [
-		{ id: 'p01', name: 'Product 1', price: 100, quantity: 20 },
-		{ id: 'p02', name: 'Product 2', price: 200, quantity: 30 },
-		{ id: 'p03', name: 'Product 3', price: 300, quantity: 40 },
-		{ id: 'p04', name: 'Product 4', price: 400, quantity: 50 }
+		{ id: 'p01', name: 'Product 1', price: 1},
+		{ id: 'p02', name: 'Product 2', price: 2},
+		{ id: 'p03', name: 'Product 3', price: 3},
+		{ id: 'p04', name: 'Product 4', price: 4}
 	];
 
-	$scope.listCarrinho = [
-		{id:'p01', name: 'Product 1', price: 100, quantity:1}
-	];
+	$scope.listCarrinho = [];
 
 	$scope.add = function() {
 		$scope.listProducts.push(
 			{
 				id: $scope.idTb,
 				name: $scope.nameTb,
-				price: $scope.priceTb,
-				quantity: $scope.quantityTb
+				price: $scope.priceTb
 			}
 		);
 	};
 
-	/*$scope.calculaTotal = function() {
+	function calculaTotal() {
 		var total = 0;
 		for(var i=0; i < $scope.listCarrinho.length; i++)
-			total += $scope.listCarrinho[i].price;
+			total += $scope.listCarrinho[i].totalPrice;
 		return total;
-	};*/
+	};
 
-	/*$scope.addCarrinho = function(id) {
+	$scope.addOne = function(id) {
+		var index = getItemCarrinho(id);
+		var product = $scope.listCarrinho[index];
+
+		$scope.listCarrinho[index].quantity += 1;
+		$scope.listCarrinho[index].totalPrice = product.price * $scope.listCarrinho[index].quantity;
+
+		$scope.totalCarrinho = calculaTotal();
+
+	};
+
+	$scope.removeOne = function(id) {
+		var index = getItemCarrinho(id);
+		var product = $scope.listCarrinho[index];
+
+		if ($scope.listCarrinho[index].quantity == 1) {
+			$scope.listCarrinho.splice(index, 1);
+		
+		} else {
+			$scope.listCarrinho[index].quantity -= 1;
+			$scope.listCarrinho[index].totalPrice = product.price * $scope.listCarrinho[index].quantity;
+		}
+
+		$scope.totalCarrinho = calculaTotal();
+
+	};
+
+	$scope.addCarrinho = function(id) {
 		var index = getSelectedIndex(id);
 		var product = $scope.listProducts[index];
 
-		$scope.listCarrinho.push(
-
-				{id: product.id, 
-				 name: product.name,
-				 price: product.price,
-				 quantity: 1
-				}
-
-			);
-
-		$scope.totalCarrinho = 10;
-		/*if(listCarrinho.indexOf(product) == -1) {
+		if(getItemCarrinho(id) == -1) {
 			$scope.listCarrinho.push(
 				{
 					id: product.id,
 					name: product.name,
 					price: product.price,
-					quantity: 1
+					quantity: 1,
+					totalPrice: product.price
 				}
 			);
 		} else {
 			$scope.listCarrinho[index].quantity += 1;
-			$scope.listCarrinho[index].price *= $scope.listCarrinho[index].quantity;
+			$scope.listCarrinho[index].totalPrice = product.price * $scope.listCarrinho[index].quantity;
 		}
 
+		$scope.totalCarrinho = calculaTotal();
 
-	};*/
+
+	};
 
 	$scope.edit = function() {
 		var index = getSelectedIndex($scope.idTb);
@@ -94,11 +110,25 @@ myapp.controller('productController', function($scope) {
 
 	};
 
+	$scope.limparCarrinho = function() {
+		$scope.listCarrinho = [];
+		$scope.totalCarrinho = 0;
+	}
+
 	function getSelectedIndex(id) {
-		for(var i=0; i < $scope.listProducts.length; i++) {
-			if($scope.listProducts[i].id == id)
+		for (var i = 0; i < $scope.listProducts.length; i++) {
+			if ($scope.listProducts[i].id == id)
 				return i;
-			return -1;
 		}
+		
+		return -1;
+	};
+
+	function getItemCarrinho(id) {
+		for (var i = 0; i < $scope.listCarrinho.length; i++) {
+			if ($scope.listCarrinho[i].id == id)
+				return i;
+		}
+		return -1;
 	}
 });

@@ -4,7 +4,7 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>Angular App</title>
+	<title>Home - Site de Compras</title>
 
 	<link rel="stylesheet" href="css/style.css">
 	<link rel="stylesheet" href="css/bootstrap.min.css">
@@ -14,6 +14,8 @@
 	<script src="js/myapp.js"></script>
 	<script src="js/jquery-3.2.1.js"></script>
 
+	<link rel="shortcut icon" href="img/favicon.ico">
+
 </head>
 <body ng-controller="productController" class="site">
 	
@@ -21,7 +23,7 @@
 		<div class="container">
 			<header class="header">
 				<div class="banner">
-					<h1><a href="index.html">Simple Angular App</a></h1>
+					<h1><a href="index.html">Site de Compras</a></h1>
 				</div>
 			</header>
 			<hr />
@@ -34,16 +36,15 @@
 							<span class="sr-only">Toggle navigation</span>
 							<span class="icon-bar"></span>
 							<span class="icon-bar"></span>
-							<span class="icon-bar"></span>
 						</button>
-						<a class="navbar-brand" href="#">Angular</a>
+						<span class="navbar-brand"><i class="fa fa-shopping-bag"></i></span>
 					</div>
 
 					<!-- Collect the nav links, forms, and other content for toggling -->
 					<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 						<ul class="nav navbar-nav">
 							<li class="active"><a href="#">HOME <span class="sr-only">(current)</span></a></li>
-							<li><a href="#">Sobre</a></li>
+							<li><a href="sobre.html">Sobre</a></li>
 						</ul>
 						<form class="navbar-form navbar-right">
 							<div class="form-group">
@@ -60,12 +61,12 @@
 			<br>
 			<div class="row-fluid">
 				
-				<div class="col-md-8">
+				<div class="col-md-6">
 					
 					<div class="panel panel-default">
 						
 						<div class="panel-heading">
-							Produtos
+							PRODUTOS
 						</div>
 
 						<table class="table table-striped">
@@ -73,22 +74,17 @@
 								<th>ID</th>
 								<th>NOME</th>
 								<th>PREÇO</th>
-								<th>QUANTIDADE</th>
-								<th>OPÇÕES</th>
+								<th></th>
 							</tr>
 
 							<tr ng-repeat="product in listProducts">
 								<td>{{product.id}}</td>
 								<td>{{product.name}}</td>
-								<td>{{product.price}}</td>
-								<td>{{product.quantity}}</td>
+								<td>R$ {{product.price}}</td>
 								<td>
-									<a href="#" ng-click="addCarrinho(product.id)">
-										<i class="fa fa-cart-plus fa-2x" aria-hidden="true"></i>
+									<a class="btn btn-default" href="#" ng-click="addCarrinho(product.id)">
+										<i class="fa fa-cart-plus" aria-hidden="true"></i>
 									</a>
-									| <a href="#" ng-click="selectEdit(product.id)" data-toggle="modal" data-target="#myModal">
-									<i class="fa fa-pencil-square-o fa-2x" aria-hidden="true"></i>
-								</a>
 							</td>
 						</tr>
 					</table>
@@ -120,10 +116,6 @@
 										<td><input class="form-control" type="text" ng-model="priceTb"></td>
 									</tr>
 
-									<tr>
-										<td>QUANTIDADE</td>
-										<td><input class="form-control" type="text" ng-model="quantityTb"></td>
-									</tr>
 								</table>
 							</div>
 							<div class="modal-footer">
@@ -136,30 +128,73 @@
 				</div>
 			</div>
 
-			<div class="col-md-4">
+			<div class="col-md-6">
 				<div class="panel panel-default">
 					<div class="panel-heading text-center">
-						Carrinho
+						CARRINHO
 					</div>
 					<table class="table table-striped">
 
 						<tr ng-repeat="product in listCarrinho">
 							<td>{{product.name}}</td>
-							<td>${{product.price}}</td>
 							<td>x{{product.quantity}}</td>
-
+							<td>R$ {{product.price}}</td>
+							<td>
+								<a class="btn btn-default" href="#" ng-click="addOne(product.id)">
+									<i class="fa fa-plus" aria-hidden="true"></i>
+								</a>
+								<a class="btn btn-default" href="#" ng-click="removeOne(product.id)">
+									<i class="fa fa-minus" aria-hidden="true"></i>
+								</a>
+							</td>
+							
 						</tr>
 						<tr>
-							<td>Total: </td>
-							<td>{{$scope.calculaTotal()}}</td>
+							<td><b>Total:</b> </td>
+							<td></td>
+							<td><b>R$ <span ng-bind="totalCarrinho"></span></b></td>
+							<td></td>
 						</tr>
 					</table>
 
 					<div class="panel-footer text-center" ng-if="listCarrinho.length > 0">
-						<button type="button" class="btn btn-success">Comprar</button>
+						<button type="button" class="btn btn-success" data-toggle="modal" data-target="#myModal2">Comprar</button>
 					</div>
 
 				</div>
+
+
+				<!-- Modal Finalizar Compra -->
+				<div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+					<div class="modal-dialog" role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+								<h4 class="modal-title" id="myModalLabel">Finalizar compra</h4>
+							</div>
+							<div class="modal-body">
+								<ul class="list-group">
+									<li class="list-group-item" ng-repeat="item in listCarrinho">
+										{{item.name}} 
+										<span class="badge">{{item.quantity}}x R$ {{item.price}}</span>
+									</li>
+									<li class="list-group-item"> </li>
+									<li class="list-group-item">
+										<b>Total da compra</b>
+										<span class="badge">R$ <span ng-bind="totalCarrinho"></span></span>
+									</li>
+								</ul>
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-default" data-dismiss="modal">Voltar</button>
+								<button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="limparCarrinho()">Finalizar</button>
+							</div>
+						</div>
+					</div>
+				</div>
+
+
+
 			</div>
 
 		</div>
