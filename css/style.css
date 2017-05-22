@@ -1,8 +1,7 @@
 
 body.site {
-	/*background-color: #f4f6f7;*/
 	padding: 20px;
-	border-top: 3px solid #333;
+	/*border-top: 3px solid #333;*/
 	background-image: url(../img/fundo.svg);
 	background-attachment: fixed;
 	background-size: cover;
@@ -24,22 +23,33 @@ body.site {
 	box-shadow: 0px 0px 6px rgba(0,0,0,0.05);
 }
 
+.favicon {
+	margin: -7px !important;
+}
 .centralizado {
 	text-align: center;
 }
 
 .banner {
 	text-align: center;
+
 }
 
 .banner a {
 	color: #333;
+	font-family: Arial;
+	font-weight: 900;
 }
 
 .banner a:hover {
+	color: #333;
 	text-decoration: none;
 }
 
+.banner h1 {
+	text-shadow: 0px 0px 11px #969696;
+	font-size: 3.5em;
+}
 .footer span{
 	margin-top: 10px;
 }
@@ -47,7 +57,8 @@ body.site {
 	text-decoration: none;
 }
 .fa-facebook-square,
-.fa-shopping-bag {
+.fa-shopping-bag,
+.fa-shopping-cart {
 	color: #303f9f;
 }
 .fa-google-plus-square {
@@ -58,6 +69,36 @@ body.site {
 	margin-bottom: 20px;
 }
 
-.cursor-pointer {
+.cursor-pointer,
+.carrinho {
 	cursor: pointer;
+}
+
+.carrinho {
+	padding-top: 10px;
+}
+
+.badge-total {
+	position: absolute;
+	right: -8px;
+	top: 7px;
+	background-color: #60ff5e !important;
+	color: #000 !important;
+}
+
+@media(max-width: 768px) {
+	.badge-total {
+		position: inherit;
+	}
+}
+
+/* Alteração da paginação do bootstrap */
+.pagination > .active > a, .pagination > .active > a:focus, .pagination > .active > a:hover {
+	background-color: #8a9095 !important;
+	border-color: #606060 !important;
+	color: #fff !important;
+}
+
+.pagination > li > a {
+	color: #999fa5 !important;
 }

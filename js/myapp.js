@@ -1,6 +1,6 @@
 'use strict';
 
-var myapp = angular.module('myapp', []);
+var myapp = angular.module('myapp', ['angularUtils.directives.dirPagination']);
 
 myapp.controller('productController', function($scope, $http) {
 
@@ -9,16 +9,9 @@ myapp.controller('productController', function($scope, $http) {
 	$scope.listCarrinho = [];
 
 	//Recupera os produtos de um arquivo JSON
-	$http({
-		url:'resources/dados.json',
-		dataType: 'json',
-		method: 'GET',
-		data: '',
-		headers: {
-			"Content-type": "application/json; charset=utf-8"
-		}
-	}).then(function(response) {
-		$scope.listProducts = response.data.produtos;
+	$http.get('resources/dados.json')
+		.then(function(response) {
+			$scope.listProducts = response.data.produtos;
 	});
 
 	//Função que adiciona mais um item do mesmo no carrinho
@@ -30,6 +23,7 @@ myapp.controller('productController', function($scope, $http) {
 		$scope.listCarrinho[index].totalPrice = product.price * $scope.listCarrinho[index].quantity;
 
 		$scope.totalCarrinho = calculaTotal();
+		$scope.totalItens = totalItensCarrinho();
 
 	};
 
@@ -47,6 +41,7 @@ myapp.controller('productController', function($scope, $http) {
 		}
 
 		$scope.totalCarrinho = calculaTotal();
+		$scope.totalItens = totalItensCarrinho();
 
 	};
 
@@ -71,6 +66,7 @@ myapp.controller('productController', function($scope, $http) {
 		}
 
 		$scope.totalCarrinho = calculaTotal();
+		$scope.totalItens = totalItensCarrinho();
 
 	};
 
@@ -78,6 +74,7 @@ myapp.controller('productController', function($scope, $http) {
 	$scope.limparCarrinho = function() {
 		$scope.listCarrinho = [];
 		$scope.totalCarrinho = 0;
+		$scope.totalItens = 0;
 	}
 
 	//Função que filtra a lista de produtos por categoria
@@ -88,6 +85,25 @@ myapp.controller('productController', function($scope, $http) {
 	//Função de ordenação da tabela de produtos
 	$scope.orderByMe = function(x) {
 		$scope.myOrderBy = x;
+		$scope.reverse = !$scope.reverse;
+
+		if(x == 'id' && $scope.reverse) {
+			$("#_id").attr("class", "fa fa-sort-numeric-desc cursor-pointer");
+		} else {
+			$("#_id").attr("class", "fa fa-sort-numeric-asc cursor-pointer");
+		}
+
+		if(x == 'name' && $scope.reverse) {
+			$("#_name").attr("class", "fa fa-sort-alpha-desc cursor-pointer");
+		} else {
+			$("#_name").attr("class", "fa fa-sort-alpha-asc cursor-pointer");
+		}
+
+		if(x == 'price' && $scope.reverse) {
+			$("#_price").attr("class", "fa fa-sort-amount-desc cursor-pointer");
+		} else {
+			$("#_price").attr("class", "fa fa-sort-amount-asc cursor-pointer");
+		}
 	}
 
 	//Função que retorna o indice do item selecionado da lista de produtos
@@ -98,6 +114,14 @@ myapp.controller('productController', function($scope, $http) {
 		}
 		return -1;
 	};
+
+	function totalItensCarrinho() {
+		var total = 0;
+		for (var i = 0; i < $scope.listCarrinho.length; i++) {
+			total += $scope.listCarrinho[i].quantity;
+		}
+		return total;
+	}
 
 	//Função que calcula o valor total do carrinho
 	function calculaTotal() {

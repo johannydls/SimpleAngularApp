@@ -13,10 +13,12 @@
 	<script src="js/angular.min.js"></script>
 	<script src="js/myapp.js"></script>
 	<script src="js/jquery-3.2.1.js"></script>
+	<script src="js/dirPagination.js"></script>
 
-	<link rel="shortcut icon" href="img/favicon.ico">
+	<link rel="shortcut icon" href="img/favicon-empire.ico">
 
 </head>
+
 <body ng-controller="productController" class="site">
 	
 	<div class="body">
@@ -37,20 +39,32 @@
 							<span class="icon-bar"></span>
 							<span class="icon-bar"></span>
 						</button>
-						<span class="navbar-brand"><i class="fa fa-shopping-bag"></i></span>
+						<span class="navbar-brand"><i class="fa fa-empire fa-2x favicon"></i></span>
 					</div>
 
 					<!-- Collect the nav links, forms, and other content for toggling -->
 					<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 						<ul class="nav navbar-nav">
-							<li class="active"><a href="#">HOME <span class="sr-only">(current)</span></a></li>
+							<li class="active"><a href="javascript:void(0)">HOME <span class="sr-only">(current)</span></a></li>
 							<li><a href="sobre.html">Sobre</a></li>
 						</ul>
+						<ul class="nav navbar-right">
+							<li>
+								<span data-toggle="modal" data-target="#modalCarrinho">
+									<i class="fa fa-shopping-cart fa-2x carrinho" title="Ver carrinho">
+										<span ng-if="listCarrinho.length > 0" class="badge badge-total" ng-bind="totalItens"></span>
+									</i>
+								</span>
+							</li>
+						</ul>
+
 						<form class="navbar-form navbar-right">
 							<div class="form-group">
 								<input type="text" class="form-control" placeholder="Buscar produto" ng-model="search">
 							</div>
 						</form>
+
+						
 
 					</div><!-- /.navbar-collapse -->
 				</div><!-- /.container-fluid -->
@@ -69,75 +83,97 @@
 					</div>
 				</div>
 				
-				<div class="col-md-6">
+				<div class="col-md-12">
 					
 					<div class="panel panel-default">
 						
-						<div class="panel-heading">
-							PRODUTOS
-						</div>
+
 
 						<table class="table table-striped">
+							
 							<tr>
-								<th>ID <i ng-click="orderByMe('id')" class="fa fa-sort cursor-pointer"></i></th>
-								<th>NOME <i ng-click="orderByMe('name')" class="fa fa-sort cursor-pointer"></th>
-								<th>PREÇO <i ng-click="orderByMe('price')" class="fa fa-sort cursor-pointer" ></th>
+								<th>ID <i id="_id" ng-click="orderByMe('id')" class="fa fa-sort-numeric-asc cursor-pointer"></i></th>
+								<th>NOME <i id="_name" ng-click="orderByMe('name')" class="fa fa-sort-alpha-asc cursor-pointer"></i></th>
+								<th>PREÇO <i id="_price" ng-click="orderByMe('price')" class="fa fa-sort-amount-asc cursor-pointer" ></i></th>
 								<th></th>
 							</tr>
+							
 
-							<tr ng-repeat="product in listProducts | filter: search | orderBy:myOrderBy | filter: myFilter">
+							
+							<tr dir-paginate="product in listProducts | filter: search | orderBy:myOrderBy:reverse | filter: myFilter | itemsPerPage:5">
 								<td>{{product.id}}</td>
 								<td>{{product.name}}</td>
 								<td>R$ {{product.price}}</td>
 								<td>
 									<a class="btn btn-default" href="javascript:void(0)" ng-click="addCarrinho(product.id)">
-										<i class="fa fa-cart-plus" aria-hidden="true"></i>
+										<i class="fa fa-cart-plus fa-2x" aria-hidden="true"></i>
 									</a>
-							</td>
-						</tr>
-					</table>
+								</td>
+							</tr>
+
+						</table>
+						<div class="text-center">
+							<dir-pagination-controls max-size="5" boundary-links="true"></dir-pagination-controls>
+						</div>
+					</div>
+
 				</div>
 
-			</div>
+			<div>
+				
+				<!-- Modal Carrinho de Compra -->
+				<div class="modal fade" id="modalCarrinho" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+					<div class="modal-dialog" role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+								<h4 class="modal-title" id="myModalLabel">Carrinho de compras</h4>
+							</div>
+							<div class="modal-body">
+								<table class="table table-striped">
 
-			<div class="col-md-6">
-				<div class="panel panel-default">
-					<div class="panel-heading text-center">
-						CARRINHO
+									
+									<div ng-if="listCarrinho.length < 1" class="alert alert-info">
+										O carrinho está vazio!
+									</div>
+									
+
+									<tr ng-repeat="product in listCarrinho">
+										<td>{{product.name}}</td>
+										<td>x{{product.quantity}}</td>
+										<td>R$ {{product.price}}</td>
+										<td>
+											<a class="btn btn-default" href="javascript:void(0)" ng-click="addOne(product.id)">
+												<i class="fa fa-plus" aria-hidden="true"></i>
+											</a>
+											<a class="btn btn-default" href="javascript:void(0)" ng-click="removeOne(product.id)">
+												<i class="fa fa-minus" aria-hidden="true"></i>
+											</a>
+										</td>
+										
+									</tr>
+									<tr ng-if="listCarrinho.length > 0">
+										<td><b>Total:</b> </td>
+										<td></td>
+										<td><b>R$ <span ng-bind="totalCarrinho"></span></b></td>
+										<td></td>
+									</tr>
+								</table>
+
+								<div class="panel-footer text-center" ng-if="listCarrinho.length > 0">
+									<button type="button" class="btn btn-success" data-dismiss="modal" data-toggle="modal" data-target="#modalFinalizar">Comprar</button>
+								</div>
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+							</div>
+						</div>
 					</div>
-					<table class="table table-striped">
-
-						<tr ng-repeat="product in listCarrinho">
-							<td>{{product.name}}</td>
-							<td>x{{product.quantity}}</td>
-							<td>R$ {{product.price}}</td>
-							<td>
-								<a class="btn btn-default" href="javascript:void(0)" ng-click="addOne(product.id)">
-									<i class="fa fa-plus" aria-hidden="true"></i>
-								</a>
-								<a class="btn btn-default" href="javascript:void(0)" ng-click="removeOne(product.id)">
-									<i class="fa fa-minus" aria-hidden="true"></i>
-								</a>
-							</td>
-							
-						</tr>
-						<tr>
-							<td><b>Total:</b> </td>
-							<td></td>
-							<td><b>R$ <span ng-bind="totalCarrinho"></span></b></td>
-							<td></td>
-						</tr>
-					</table>
-
-					<div class="panel-footer text-center" ng-if="listCarrinho.length > 0">
-						<button type="button" class="btn btn-success" data-toggle="modal" data-target="#myModal">Comprar</button>
-					</div>
-
 				</div>
 
 
 				<!-- Modal Finalizar Compra -->
-				<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+				<div class="modal fade" id="modalFinalizar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 					<div class="modal-dialog" role="document">
 						<div class="modal-content">
 							<div class="modal-header">
@@ -158,15 +194,15 @@
 								</ul>
 							</div>
 							<div class="modal-footer">
-								<button type="button" class="btn btn-default" data-dismiss="modal">Voltar</button>
-								<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal2" data-dismiss="modal" ng-click="limparCarrinho()">Finalizar</button>
+								<button type="button" class="btn btn-default" data-dismiss="modal" data-target="#modalCarrinho" data-toggle="modal">Voltar</button>
+								<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalFim" data-dismiss="modal" ng-click="limparCarrinho()">Finalizar</button>
 							</div>
 						</div>
 					</div>
 				</div>
 
-				<!-- Modal Finalizar Compra -->
-				<div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+				<!-- Modal Compra Finalizada -->
+				<div class="modal fade" id="modalFim" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 					<div class="modal-dialog" role="document">
 						<div class="modal-content">
 							<div class="modal-header">
