@@ -53,3 +53,11 @@ body.site {
 .fa-google-plus-square {
 	color: red;
 }
+
+.menu-filtro {
+	margin-bottom: 20px;
+}
+
+.cursor-pointer {
+	cursor: pointer;
+}

@@ -13,7 +13,6 @@
 	<script src="js/angular.min.js"></script>
 	<script src="js/myapp.js"></script>
 	<script src="js/jquery-3.2.1.js"></script>
-	<script src="bower_components/angular-scroll-glue/src/scrollglue.js"></script>
 
 	<link rel="shortcut icon" href="img/favicon.ico">
 
@@ -49,7 +48,7 @@
 						</ul>
 						<form class="navbar-form navbar-right">
 							<div class="form-group">
-								<input type="text" class="form-control" placeholder="Buscar produto">
+								<input type="text" class="form-control" placeholder="Buscar produto" ng-model="search">
 							</div>
 						</form>
 
@@ -59,8 +58,16 @@
 
 			<hr />
 
-			<br>
 			<div class="row-fluid">
+				<div class="col-md-12 text-center menu-filtro">
+					<div class="btn-group" role="group">
+						<button class="btn btn-default" ng-click="filterBy('camisa')">Camisas</button>
+						<button class="btn btn-default" ng-click="filterBy('tenis')">Tênis</button>
+						<button class="btn btn-default" ng-click="filterBy('bone')">Bonés</button>
+						<button class="btn btn-default" ng-click="filterBy('mochila')">Mochilas</button>
+						<button class="btn btn-default" ng-click="filterBy('')">Todos</button>
+					</div>
+				</div>
 				
 				<div class="col-md-6">
 					
@@ -72,13 +79,13 @@
 
 						<table class="table table-striped">
 							<tr>
-								<th>ID</th>
-								<th>NOME</th>
-								<th>PREÇO</th>
+								<th>ID <i ng-click="orderByMe('id')" class="fa fa-sort cursor-pointer"></i></th>
+								<th>NOME <i ng-click="orderByMe('name')" class="fa fa-sort cursor-pointer"></th>
+								<th>PREÇO <i ng-click="orderByMe('price')" class="fa fa-sort cursor-pointer" ></th>
 								<th></th>
 							</tr>
 
-							<tr ng-repeat="product in listProducts">
+							<tr ng-repeat="product in listProducts | filter: search | orderBy:myOrderBy | filter: myFilter">
 								<td>{{product.id}}</td>
 								<td>{{product.name}}</td>
 								<td>R$ {{product.price}}</td>
@@ -91,42 +98,6 @@
 					</table>
 				</div>
 
-
-				<!-- Modal -->
-				<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-					<div class="modal-dialog" role="document">
-						<div class="modal-content">
-							<div class="modal-header">
-								<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-								<h4 class="modal-title" id="myModalLabel">Informações do Produto</h4>
-							</div>
-							<div class="modal-body">
-								<table class="table table-hover">
-									<tr>
-										<td>ID</td>
-										<td><input class="form-control" type="text" ng-model="idTb"></td>
-									</tr>
-
-									<tr>
-										<td>NOME</td>
-										<td><input class="form-control" type="text" ng-model="nameTb"></td>
-									</tr>
-
-									<tr>
-										<td>PREÇO</td>
-										<td><input class="form-control" type="text" ng-model="priceTb"></td>
-									</tr>
-
-								</table>
-							</div>
-							<div class="modal-footer">
-								<button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
-								<button type="button" class="btn btn-success" data-dismiss="model" ng-click="add()">Adicionar novo</button>
-								<button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="edit()">Salvar alterações</button>
-							</div>
-						</div>
-					</div>
-				</div>
 			</div>
 
 			<div class="col-md-6">
@@ -159,14 +130,14 @@
 					</table>
 
 					<div class="panel-footer text-center" ng-if="listCarrinho.length > 0">
-						<button type="button" class="btn btn-success" data-toggle="modal" data-target="#myModal2">Comprar</button>
+						<button type="button" class="btn btn-success" data-toggle="modal" data-target="#myModal">Comprar</button>
 					</div>
 
 				</div>
 
 
 				<!-- Modal Finalizar Compra -->
-				<div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+				<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 					<div class="modal-dialog" role="document">
 						<div class="modal-content">
 							<div class="modal-header">
@@ -188,13 +159,29 @@
 							</div>
 							<div class="modal-footer">
 								<button type="button" class="btn btn-default" data-dismiss="modal">Voltar</button>
-								<button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="limparCarrinho()">Finalizar</button>
+								<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal2" data-dismiss="modal" ng-click="limparCarrinho()">Finalizar</button>
 							</div>
 						</div>
 					</div>
 				</div>
 
-
+				<!-- Modal Finalizar Compra -->
+				<div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+					<div class="modal-dialog" role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+								<h4 class="modal-title" id="myModalLabel">Compra finalizada</h4>
+							</div>
+							<div class="modal-body">
+								Muito obrigado, e volte sempre!
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+							</div>
+						</div>
+					</div>
+				</div>
 
 			</div>
 

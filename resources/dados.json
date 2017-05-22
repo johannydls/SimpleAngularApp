@@ -1,0 +1,80 @@
+{
+	"produtos" : [
+		{
+			"id":1,
+			"name": "Tênis Olympikus Flix 2",
+			"price": 75.91,
+			"category": "tenis"
+		},
+
+		{
+			"id":2,
+			"name": "Camisa Polo Grêmio",
+			"price": 28.41,
+			"category": "camisa"
+		},
+
+		{
+			"id":3,
+			"name": "Tênis Nike Dart 12 MSL",
+			"price": 166.16,
+			"category": "tenis"
+		},
+
+		{
+			"id":4,
+			"name": "Mochila Speedo Braid",
+			"price": 56.91,
+			"category": "mochila"
+		},
+
+		{
+			"id":5,
+			"name": "Mochila Nike Brasília",
+			"price": 113.91,
+			"category": "mochila"
+		},
+
+		{
+			"id":6,
+			"name": "Camisa Polo Kappa Sewill",
+			"price": 47.41,
+			"category": "camisa"
+		},
+
+		{
+			"id":7,
+			"name": "Tênis Kappa Piemonte",
+			"price": 56.91,
+			"category": "tenis"
+		},
+
+		{
+			"id":8,
+			"name": "Tênis Kappa Vêneto",
+			"price": 56.91,
+			"category": "tenis"
+		},
+
+		{
+			"id":9,
+			"name": "Mochila Topper Notebook 4",
+			"price": 132.91,
+			"category": "mochila"
+		},
+
+		{
+			"id":10,
+			"name": "Boné Nike Dri-Fit Spiros",
+			"price": 59.90,
+			"category": "bone"
+		},
+
+		{
+			"id":11,
+			"name": "Boné No Stress Stark",
+			"price": 18.91,
+			"category": "bone"
+		}
+	]
+}
